@@ -11,6 +11,8 @@ class Unit {
   final int maxHp;
   final int power;
   final bool isPlayerUnit;
+  final String? imagePath; // 圖片路徑
+  final double imageRotation; // 圖片旋轉角度
 
   Unit({
     required this.id,
@@ -22,6 +24,8 @@ class Unit {
     required this.maxHp,
     required this.power,
     required this.isPlayerUnit,
+    this.imagePath,
+    this.imageRotation = 0,
   });
 
   Unit copyWith({
@@ -34,6 +38,8 @@ class Unit {
     int? maxHp,
     int? power,
     bool? isPlayerUnit,
+    String? imagePath,
+    double? imageRotation,
   }) {
     return Unit(
       id: id ?? this.id,
@@ -45,6 +51,8 @@ class Unit {
       maxHp: maxHp ?? this.maxHp,
       power: power ?? this.power,
       isPlayerUnit: isPlayerUnit ?? this.isPlayerUnit,
+      imagePath: imagePath ?? this.imagePath,
+      imageRotation: imageRotation ?? this.imageRotation,
     );
   }
 }

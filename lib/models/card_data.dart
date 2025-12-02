@@ -12,7 +12,9 @@ class CardData {
   final Color color;
   final CardType type;
   final int cost;
-  final IconData icon;
+  final IconData? icon;
+  final String? imagePath; // 圖片路徑
+  final double imageRotation; // 圖片旋轉角度（度數）
 
   CardData({
     required this.id,
@@ -21,6 +23,8 @@ class CardData {
     required this.color,
     required this.type,
     required this.cost,
-    required this.icon,
+    this.icon,
+    this.imagePath,
+    this.imageRotation = 0, // 預設不旋轉
   });
 }

@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../models/unit.dart';
 
@@ -67,12 +68,14 @@ class _UnitWidgetState extends State<UnitWidget>
               ),
             ),
             const SizedBox(height: 4),
-            // 單位圖標
+            // 單位圖標/圖片
             Container(
               width: 60,
               height: 60,
               decoration: BoxDecoration(
-                color: widget.unit.color,
+                color: widget.unit.imagePath != null
+                    ? Colors.transparent
+                    : widget.unit.color,
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: widget.unit.isPlayerUnit
@@ -88,10 +91,19 @@ class _UnitWidgetState extends State<UnitWidget>
                   ),
                 ],
               ),
-              child: Icon(
-                widget.unit.icon,
-                size: 30,
-                color: Colors.white,
+              child: ClipOval(
+                child: widget.unit.imagePath != null
+                    ? Transform.rotate(
+                        angle: widget.unit.imageRotation * math.pi / 180,
+                        child: Image.asset(
+                          widget.unit.imagePath!,
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.contain,
+                        ),
+                      )
+                    : Icon(widget.unit.icon, size: 30, color: Colors.white,
+                      ),
               ),
             ),
             const SizedBox(height: 4),

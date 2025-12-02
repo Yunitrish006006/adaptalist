@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../models/card_data.dart';
 
@@ -26,15 +27,15 @@ class _GameCardState extends State<GameCard> {
     final card = Opacity(
       opacity: widget.canAfford ? 1.0 : 0.5,
       child: Container(
-        width: 100,
-        height: 140,
+        width: 170,
+        height: 240,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [widget.card.color, widget.card.color.withAlpha(179)],
           ),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(color: Colors.white, width: 3),
           boxShadow: _isDragging
               ? [
@@ -57,33 +58,50 @@ class _GameCardState extends State<GameCard> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(widget.card.icon, size: 35, color: Colors.white),
-                const SizedBox(height: 4),
+                if (widget.card.imagePath != null)
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Transform.rotate(
+                      angle: widget.card.imageRotation * math.pi / 180,
+                      child: Image.asset(
+                        widget.card.imagePath!,
+                        width: 90,
+                        height: 90,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  )
+                else if (widget.card.icon != null)
+                  Icon(widget.card.icon, size: 70, color: Colors.white),
+                const SizedBox(height: 10),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
                     widget.card.name,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 13,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 10),
                 Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white.withAlpha(77),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(14),
                   ),
                   child: Text(
                     '威力: ${widget.card.power}',
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 11,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -92,11 +110,11 @@ class _GameCardState extends State<GameCard> {
             ),
             // 聖水費用標籤
             Positioned(
-              top: 4,
-              left: 4,
+              top: 10,
+              left: 10,
               child: Container(
-                width: 28,
-                height: 28,
+                width: 44,
+                height: 44,
                 decoration: BoxDecoration(
                   color: Colors.purple.shade700,
                   shape: BoxShape.circle,
@@ -107,7 +125,7 @@ class _GameCardState extends State<GameCard> {
                     '${widget.card.cost}',
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 14,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

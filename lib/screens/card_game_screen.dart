@@ -21,40 +21,32 @@ class _CardGameScreenState extends State<CardGameScreen> {
   // 卡牌庫
   final List<CardData> _deck = [
     CardData(
-      id: 1,
-      name: '哥布林',
-      power: 3,
-      color: Colors.green,
-      type: CardType.unit,
+      id: 5,
+      name: 'ㄌㄧㄤˋㄧㄐㄧㄚˋ', //晾衣架
+      power: 5,
+      color: Colors.grey,
+      type: CardType.physic,
+      cost: 3,
+      imagePath: 'assets/items/hanger.png',
+      imageRotation: 45,
+    ),
+    CardData(
+      id: 6,
+      name: 'ㄞˋㄉㄜ˙ㄒㄧㄠˇㄕㄡˇ', //愛的小手
+      power: 0,
+      color: Colors.cyan,
+      type: CardType.physic,
       cost: 2,
-      icon: Icons.person,
+      imagePath: 'assets/items/love_paddle.png',
     ),
     CardData(
-      id: 2,
-      name: '騎士',
-      power: 6,
-      color: Colors.blue,
-      type: CardType.unit,
-      cost: 3,
-      icon: Icons.shield,
-    ),
-    CardData(
-      id: 3,
-      name: '弓箭手',
-      power: 4,
-      color: Colors.orange,
-      type: CardType.unit,
-      cost: 3,
-      icon: Icons.sports_martial_arts,
-    ),
-    CardData(
-      id: 4,
-      name: 'ㄐㄩˋㄖㄣˊ ',
-      power: 9,
+      id: 7,
+      name: 'ㄊㄥˊㄊㄧㄠˊ', //藤條
+      power: 7,
       color: Colors.brown,
-      type: CardType.unit,
-      cost: 5,
-      icon: Icons.fitness_center,
+      type: CardType.physic,
+      cost: 4,
+      imagePath: 'assets/items/rattan.png',
     ),
   ];
 
@@ -148,14 +140,14 @@ class _CardGameScreenState extends State<CardGameScreen> {
     // 使用倒序遍歷，避免移除元素時索引錯亂
     for (int i = _units.length - 1; i >= 0; i--) {
       final unit = _units[i];
-      
+
       // 計算移動方向（我方單位向上移動，敵方向下）
       final moveSpeed = 2.0;
       final direction = unit.isPlayerUnit ? -1.0 : 1.0;
-      
+
       // 更新位置
       final newY = unit.position.dy + (moveSpeed * direction);
-      
+
       // 檢查是否到達城堡
       if (unit.isPlayerUnit && newY < 100) {
         // 我方單位攻擊敵方城堡
@@ -168,13 +160,11 @@ class _CardGameScreenState extends State<CardGameScreen> {
         _units.removeAt(i);
         continue;
       }
-      
+
       // 確保單位不會超出邊界
       final clampedY = newY.clamp(30.0, _fieldSize.height - 30.0);
-      
-      _units[i] = unit.copyWith(
-        position: Offset(unit.position.dx, clampedY),
-      );
+
+      _units[i] = unit.copyWith(position: Offset(unit.position.dx, clampedY));
     }
   }
 
@@ -244,11 +234,13 @@ class _CardGameScreenState extends State<CardGameScreen> {
         name: card.name,
         position: position,
         color: card.color,
-        icon: card.icon,
+        icon: card.icon ?? Icons.help,
         hp: card.power * 10,
         maxHp: card.power * 10,
         power: card.power,
         isPlayerUnit: true,
+        imagePath: card.imagePath,
+        imageRotation: card.imageRotation,
       );
 
       _units.add(unit);
@@ -279,7 +271,7 @@ class _CardGameScreenState extends State<CardGameScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text(
-          '皇室戰爭',
+          '鬼島亂鬥',
           style: TextStyle(fontFamily: 'Iansui', fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -324,10 +316,7 @@ class _CardGameScreenState extends State<CardGameScreen> {
                           isPlayerCastle: false,
                           hp: _enemyCastle.hp,
                           maxHp: _enemyCastle.maxHp,
-                          position: Offset(
-                            constraints.maxWidth / 2,
-                            60,
-                          ),
+                          position: Offset(constraints.maxWidth / 2, 60),
                         );
                       });
                     }
@@ -346,7 +335,7 @@ class _CardGameScreenState extends State<CardGameScreen> {
 
           // 手牌區域
           Container(
-            height: 180,
+            height: 310,
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: Colors.grey.shade900,
