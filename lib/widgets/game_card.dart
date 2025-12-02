@@ -32,21 +32,21 @@ class _GameCardState extends State<GameCard> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [widget.card.color, widget.card.color.withOpacity(0.7)],
+            colors: [widget.card.color, widget.card.color.withAlpha(179)],
           ),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.white, width: 3),
           boxShadow: _isDragging
               ? [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
+                    color: Colors.black.withAlpha(77),
                     blurRadius: 20,
                     spreadRadius: 5,
                   ),
                 ]
               : [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Colors.black.withAlpha(51),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),
@@ -76,7 +76,7 @@ class _GameCardState extends State<GameCard> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.3),
+                    color: Colors.white.withAlpha(77),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(

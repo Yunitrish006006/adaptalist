@@ -99,7 +99,7 @@ class _UnitWidgetState extends State<UnitWidget>
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.6),
+                color: Colors.black.withAlpha(153),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(

@@ -20,7 +20,7 @@ class CastleWidget extends StatelessWidget {
             width: 80,
             height: 8,
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withAlpha(77),
               borderRadius: BorderRadius.circular(4),
             ),
             child: FractionallySizedBox(
@@ -72,7 +72,7 @@ class CastleWidget extends StatelessWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.5),
+                  color: Colors.black.withAlpha(128),
                   blurRadius: 10,
                   offset: const Offset(0, 5),
                 ),
@@ -95,7 +95,7 @@ class CastleWidget extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 2),
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.6),
+                      color: Colors.black.withAlpha(153),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
