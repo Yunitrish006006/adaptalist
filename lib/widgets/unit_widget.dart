@@ -56,7 +56,10 @@ class _UnitWidgetState extends State<UnitWidget>
               ),
               child: FractionallySizedBox(
                 alignment: Alignment.centerLeft,
-                widthFactor: widget.unit.hp / widget.unit.maxHp,
+                widthFactor: (widget.unit.hp / widget.unit.maxHp).clamp(
+                  0.0,
+                  1.0,
+                ),
                 child: Container(
                   decoration: BoxDecoration(
                     color: widget.unit.isPlayerUnit
