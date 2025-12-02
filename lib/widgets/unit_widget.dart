@@ -120,7 +120,6 @@ class _UnitWidgetState extends State<UnitWidget>
               child: Text(
                 widget.unit.name,
                 style: const TextStyle(
-                  fontFamily: 'Iansui',
                   color: Colors.white,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,

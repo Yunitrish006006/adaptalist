@@ -26,7 +26,7 @@ class _CardGameScreenState extends State<CardGameScreen> {
       power: 5,
       color: Colors.grey,
       type: CardType.physic,
-      cost: 3,
+      cost: ResourceCost(stamina: 2, spirit: 1),
       imagePath: 'assets/items/hanger.png',
       imageRotation: 45,
     ),
@@ -36,7 +36,7 @@ class _CardGameScreenState extends State<CardGameScreen> {
       power: 0,
       color: Colors.cyan,
       type: CardType.physic,
-      cost: 2,
+      cost: ResourceCost(stamina: 1, money: 50),
       imagePath: 'assets/items/love_paddle.png',
     ),
     CardData(
@@ -45,7 +45,7 @@ class _CardGameScreenState extends State<CardGameScreen> {
       power: 7,
       color: Colors.brown,
       type: CardType.physic,
-      cost: 4,
+      cost: ResourceCost(stamina: 3, spirit: 2),
       imagePath: 'assets/items/rattan.png',
     ),
   ];
@@ -56,10 +56,13 @@ class _CardGameScreenState extends State<CardGameScreen> {
   // 場上的單位
   final List<Unit> _units = [];
 
-  // 聖水系統
-  int _currentElixir = 5;
-  final int _maxElixir = 10;
-  Timer? _elixirTimer;
+  // 資源系統
+  int _stamina = 5; // 體力
+  final int _maxStamina = 10;
+  int _spirit = 5; // 精神力
+  final int _maxSpirit = 10;
+  int _money = 100; // 金錢
+  Timer? _resourceTimer;
   Timer? _gameTimer;
 
   int _unitIdCounter = 0;
@@ -79,7 +82,7 @@ class _CardGameScreenState extends State<CardGameScreen> {
     // 初始化城堡
     _initCastles();
     // 啟動計時器
-    _startElixirTimer();
+    _startResourceTimer();
     _startGameTimer();
   }
 
@@ -107,18 +110,18 @@ class _CardGameScreenState extends State<CardGameScreen> {
 
   @override
   void dispose() {
-    _elixirTimer?.cancel();
+    _resourceTimer?.cancel();
     _gameTimer?.cancel();
     super.dispose();
   }
 
-  void _startElixirTimer() {
-    _elixirTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_currentElixir < _maxElixir) {
-        setState(() {
-          _currentElixir++;
-        });
-      }
+  void _startResourceTimer() {
+    _resourceTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        // 體力和精神力每秒恢復1
+        if (_stamina < _maxStamina) _stamina++;
+        if (_spirit < _maxSpirit) _spirit++;
+      });
     });
   }
 
@@ -142,11 +145,10 @@ class _CardGameScreenState extends State<CardGameScreen> {
       final unit = _units[i];
 
       // 計算移動方向（我方單位向上移動，敵方向下）
-      final moveSpeed = 2.0;
       final direction = unit.isPlayerUnit ? -1.0 : 1.0;
 
-      // 更新位置
-      final newY = unit.position.dy + (moveSpeed * direction);
+      // 使用單位自己的速度
+      final newY = unit.position.dy + (unit.speed * direction);
 
       // 檢查是否到達城堡
       if (unit.isPlayerUnit && newY < 100) {
@@ -183,10 +185,9 @@ class _CardGameScreenState extends State<CardGameScreen> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: Text(message, style: const TextStyle(fontFamily: 'Iansui')),
+        title: Text(message),
         content: const Text(
           '要重新開始遊戲嗎？',
-          style: TextStyle(fontFamily: 'Iansui'),
         ),
         actions: [
           TextButton(
@@ -194,7 +195,7 @@ class _CardGameScreenState extends State<CardGameScreen> {
               Navigator.of(context).pop();
               _resetGame();
             },
-            child: const Text('重新開始', style: TextStyle(fontFamily: 'Iansui')),
+            child: const Text('重新開始'),
           ),
         ],
       ),
@@ -204,17 +205,35 @@ class _CardGameScreenState extends State<CardGameScreen> {
   void _resetGame() {
     setState(() {
       _units.clear();
-      _currentElixir = 5;
+      _stamina = 5;
+      _spirit = 5;
+      _money = 100;
       _handCards = _drawRandomCards(4);
       _initCastles();
     });
     _startGameTimer();
   }
 
+  // 檢查資源是否足夠
+  bool _canAfford(ResourceCost cost) {
+    return _stamina >= cost.stamina &&
+        _spirit >= cost.spirit &&
+        _money >= cost.money;
+  }
+
+  // 資源費用文字
+  String _getCostText(ResourceCost cost) {
+    final parts = <String>[];
+    if (cost.stamina > 0) parts.add('體力${cost.stamina}');
+    if (cost.spirit > 0) parts.add('精神${cost.spirit}');
+    if (cost.money > 0) parts.add('金錢${cost.money}');
+    return parts.join(' ');
+  }
+
   void _summonUnit(Offset position, CardData card) {
-    // 檢查聖水是否足夠
-    if (_currentElixir < card.cost) {
-      _showMessage('聖水不足！需要 ${card.cost} 聖水');
+    // 檢查資源是否足夠
+    if (!_canAfford(card.cost)) {
+      _showMessage('資源不足！需要 ${_getCostText(card.cost)}');
       return;
     }
 
@@ -224,9 +243,11 @@ class _CardGameScreenState extends State<CardGameScreen> {
       return;
     }
 
-    // 扣除聖水
+    // 扣除資源
     setState(() {
-      _currentElixir -= card.cost;
+      _stamina -= card.cost.stamina;
+      _spirit -= card.cost.spirit;
+      _money -= card.cost.money;
 
       // 召喚單位
       final unit = Unit(
@@ -241,6 +262,7 @@ class _CardGameScreenState extends State<CardGameScreen> {
         isPlayerUnit: true,
         imagePath: card.imagePath,
         imageRotation: card.imageRotation,
+        speed: card.speed,
       );
 
       _units.add(unit);
@@ -272,16 +294,19 @@ class _CardGameScreenState extends State<CardGameScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text(
           '鬼島亂鬥',
-          style: TextStyle(fontFamily: 'Iansui', fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 16),
+            padding: const EdgeInsets.only(right: 8),
             child: Center(
-              child: ElixirBar(
-                currentElixir: _currentElixir,
-                maxElixir: _maxElixir,
+              child: ResourceBar(
+                stamina: _stamina,
+                maxStamina: _maxStamina,
+                spirit: _spirit,
+                maxSpirit: _maxSpirit,
+                money: _money,
               ),
             ),
           ),
@@ -351,7 +376,6 @@ class _CardGameScreenState extends State<CardGameScreen> {
                     const Text(
                       '手牌',
                       style: TextStyle(
-                        fontFamily: 'Iansui',
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -360,7 +384,6 @@ class _CardGameScreenState extends State<CardGameScreen> {
                     Text(
                       '單位: ${_units.length}',
                       style: const TextStyle(
-                        fontFamily: 'Iansui',
                         fontSize: 14,
                         color: Colors.white70,
                       ),
@@ -372,7 +395,7 @@ class _CardGameScreenState extends State<CardGameScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: _handCards.map((card) {
-                      final canAfford = _currentElixir >= card.cost;
+                      final canAfford = _canAfford(card.cost);
                       return GameCard(
                         card: card,
                         isDraggable: true,

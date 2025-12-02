@@ -13,6 +13,7 @@ class Unit {
   final bool isPlayerUnit;
   final String? imagePath; // 圖片路徑
   final double imageRotation; // 圖片旋轉角度
+  final double speed; // 行進速度
 
   Unit({
     required this.id,
@@ -26,6 +27,7 @@ class Unit {
     required this.isPlayerUnit,
     this.imagePath,
     this.imageRotation = 0,
+    this.speed = 2.0,
   });
 
   Unit copyWith({
@@ -40,6 +42,7 @@ class Unit {
     bool? isPlayerUnit,
     String? imagePath,
     double? imageRotation,
+    double? speed,
   }) {
     return Unit(
       id: id ?? this.id,
@@ -53,6 +56,7 @@ class Unit {
       isPlayerUnit: isPlayerUnit ?? this.isPlayerUnit,
       imagePath: imagePath ?? this.imagePath,
       imageRotation: imageRotation ?? this.imageRotation,
+      speed: speed ?? this.speed,
     );
   }
 }

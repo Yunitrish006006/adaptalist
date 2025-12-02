@@ -40,7 +40,6 @@ class CastleWidget extends StatelessWidget {
           Text(
             '${castle.hp}/${castle.maxHp}',
             style: const TextStyle(
-              fontFamily: 'Iansui',
               color: Colors.white,
               fontSize: 10,
               fontWeight: FontWeight.bold,
@@ -102,7 +101,6 @@ class CastleWidget extends StatelessWidget {
                       castle.isPlayerCastle ? '我方' : '敵方',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        fontFamily: 'Iansui',
                         color: Colors.white,
                         fontSize: 10,
                         fontWeight: FontWeight.bold,

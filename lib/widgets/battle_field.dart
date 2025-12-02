@@ -71,7 +71,6 @@ class BattleField extends StatelessWidget {
                       '拖曳卡牌到場地上召喚單位',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontFamily: 'Iansui',
                         color: Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

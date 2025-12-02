@@ -108,28 +108,33 @@ class _GameCardState extends State<GameCard> {
                 ),
               ],
             ),
-            // 聖水費用標籤
+            // 資源費用標籤
             Positioned(
-              top: 10,
-              left: 10,
-              child: Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: Colors.purple.shade700,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 2),
-                ),
-                child: Center(
-                  child: Text(
-                    '${widget.card.cost}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
+              top: 8,
+              left: 8,
+              right: 8,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (widget.card.cost.stamina > 0)
+                    _buildCostBadge(
+                      Icons.fitness_center,
+                      widget.card.cost.stamina,
+                      Colors.orange,
                     ),
-                  ),
-                ),
+                  if (widget.card.cost.spirit > 0)
+                    _buildCostBadge(
+                      Icons.psychology,
+                      widget.card.cost.spirit,
+                      Colors.purple,
+                    ),
+                  if (widget.card.cost.money > 0)
+                    _buildCostBadge(
+                      Icons.attach_money,
+                      widget.card.cost.money,
+                      Colors.amber.shade700,
+                    ),
+                ],
               ),
             ),
           ],
@@ -162,6 +167,33 @@ class _GameCardState extends State<GameCard> {
         });
       },
       child: card,
+    );
+  }
+
+  Widget _buildCostBadge(IconData icon, int value, Color color) {
+    return Container(
+      margin: const EdgeInsets.only(right: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.white, width: 1.5),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: Colors.white, size: 14),
+          const SizedBox(width: 2),
+          Text(
+            '$value',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
