@@ -15,6 +15,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        fontFamily: 'elffont',
+        fontFamilyFallback: const ['Iansui'],
       ),
       home: const CardGameScreen(),
     );

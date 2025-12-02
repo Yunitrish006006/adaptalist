@@ -37,6 +37,7 @@ class ElixirBar extends StatelessWidget {
           Text(
             '$currentElixir/$maxElixir',
             style: const TextStyle(
+              fontFamily: 'Iansui',
               color: Colors.white,
               fontSize: 18,
               fontWeight: FontWeight.bold,

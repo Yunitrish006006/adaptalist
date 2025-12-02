@@ -49,21 +49,12 @@ class _CardGameScreenState extends State<CardGameScreen> {
     ),
     CardData(
       id: 4,
-      name: '巨人',
+      name: 'ㄐㄩˋㄖㄣˊ ',
       power: 9,
       color: Colors.brown,
       type: CardType.unit,
       cost: 5,
       icon: Icons.fitness_center,
-    ),
-    CardData(
-      id: 5,
-      name: '火球術',
-      power: 7,
-      color: Colors.red,
-      type: CardType.spell,
-      cost: 4,
-      icon: Icons.local_fire_department,
     ),
   ];
 
@@ -202,15 +193,18 @@ class _CardGameScreenState extends State<CardGameScreen> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: Text(message),
-        content: const Text('要重新開始遊戲嗎？'),
+        title: Text(message, style: const TextStyle(fontFamily: 'Iansui')),
+        content: const Text(
+          '要重新開始遊戲嗎？',
+          style: TextStyle(fontFamily: 'Iansui'),
+        ),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
               _resetGame();
             },
-            child: const Text('重新開始'),
+            child: const Text('重新開始', style: TextStyle(fontFamily: 'Iansui')),
           ),
         ],
       ),
@@ -284,7 +278,10 @@ class _CardGameScreenState extends State<CardGameScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('皇室戰爭'),
+        title: const Text(
+          '皇室戰爭',
+          style: TextStyle(fontFamily: 'Iansui', fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         actions: [
           Padding(
@@ -365,6 +362,7 @@ class _CardGameScreenState extends State<CardGameScreen> {
                     const Text(
                       '手牌',
                       style: TextStyle(
+                        fontFamily: 'Iansui',
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -373,6 +371,7 @@ class _CardGameScreenState extends State<CardGameScreen> {
                     Text(
                       '單位: ${_units.length}',
                       style: const TextStyle(
+                        fontFamily: 'Iansui',
                         fontSize: 14,
                         color: Colors.white70,
                       ),

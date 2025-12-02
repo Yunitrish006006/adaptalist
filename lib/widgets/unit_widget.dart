@@ -50,7 +50,7 @@ class _UnitWidgetState extends State<UnitWidget>
               width: 60,
               height: 6,
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withAlpha(77),
                 borderRadius: BorderRadius.circular(3),
               ),
               child: FractionallySizedBox(
@@ -82,7 +82,7 @@ class _UnitWidgetState extends State<UnitWidget>
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
+                    color: Colors.black.withAlpha(77),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),
@@ -105,6 +105,7 @@ class _UnitWidgetState extends State<UnitWidget>
               child: Text(
                 widget.unit.name,
                 style: const TextStyle(
+                  fontFamily: 'Iansui',
                   color: Colors.white,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,

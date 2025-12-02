@@ -61,7 +61,7 @@ class BattleField extends StatelessWidget {
               CastleWidget(castle: enemyCastle),
               CastleWidget(castle: playerCastle),
               // 單位
-              ...units.map((unit) => UnitWidget(unit: unit)).toList(),
+              ...units.map((unit) => UnitWidget(unit: unit)),
               // 提示文字
               if (units.isEmpty)
                 const Center(
@@ -71,6 +71,7 @@ class BattleField extends StatelessWidget {
                       '拖曳卡牌到場地上召喚單位',
                       textAlign: TextAlign.center,
                       style: TextStyle(
+                        fontFamily: 'Iansui',
                         color: Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -97,7 +98,7 @@ class FieldLinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.3)
+      ..color = Colors.white.withAlpha(77)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
@@ -110,7 +111,7 @@ class FieldLinePainter extends CustomPainter {
 
     // 繪製虛線
     final dashPaint = Paint()
-      ..color = Colors.white.withOpacity(0.2)
+      ..color = Colors.white.withAlpha(51)
       ..strokeWidth = 1;
 
     for (double i = 0; i < size.width; i += 20) {
